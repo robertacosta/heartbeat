@@ -2,10 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>jbossews</groupId>
-	<artifactId>jbossews</artifactId>
+	<artifactId>emr</artifactId>
 	<packaging>war</packaging>
 	<version>1.0</version>
-	<name>jbossews</name>
+	<name>emr</name>
 	
 	<parent>
         <groupId>org.springframework.boot</groupId>
@@ -97,7 +97,7 @@
 						<version>2.1.1</version>
 						<configuration>
 							<outputDirectory>webapps</outputDirectory>
-							<warName>ROOT</warName>
+							<warName>emr</warName>
 						</configuration>
 					</plugin>
 				</plugins>
