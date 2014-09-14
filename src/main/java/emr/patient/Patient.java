@@ -10,10 +10,13 @@ public class Patient {
 	// Basics:
 	private String firstName;
 	private String lastName;
+	private String middleName;
 	private int height;
 	private int weight;
 	private LocalDate birthdate;
 	private String socialSecurityNumber;
+	private String primaryLanguage;
+	private String statusCode;
 	private Address address;
 	private PhoneNumber phoneNumber;
 	private Insurance insurance;
@@ -209,5 +212,29 @@ public class Patient {
 
 	public void setPneumoniaShotDate(LocalDate pneumoniaShotDate) {
 		this.pneumoniaShotDate = pneumoniaShotDate;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public String getPrimaryLanguage() {
+		return primaryLanguage;
+	}
+
+	public void setPrimaryLanguage(String primaryLanguage) {
+		this.primaryLanguage = primaryLanguage;
+	}
+
+	public String getStatusCode() {
+		return statusCode;
+	}
+
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
 	}
 }
