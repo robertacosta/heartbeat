@@ -1,4 +1,4 @@
-package emr;
+package emr.patient;
 
 import java.util.List;
 
@@ -8,7 +8,11 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(collectionResourceRel = "patient", path = "patient")
 public interface PatientRepository extends MongoRepository<Patient, String> {
-
+	
 	List<Patient> findByLastName(@Param("last_name") String lastName);
-
+	List<Patient> findByFirstNameAndLastName(@Param("first_name") String firstName, @Param("last_name") String lastName);
+	List<Patient> findById(@Param("id") String id);  // Probably change to predicate
+	
+	// On the listing it should show: Name (Last, First), Medical Record Number (ID), Date of Birthday
+	// Make a predicate for advanced search (birthday and ID)
 }
