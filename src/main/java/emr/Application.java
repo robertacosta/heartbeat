@@ -2,6 +2,7 @@ package emr;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.authentication.UserCredentials;
@@ -18,6 +19,7 @@ import com.mongodb.MongoClient;
 @EnableMongoRepositories
 @Import(RepositoryRestMvcConfiguration.class)
 @EnableAutoConfiguration
+@ComponentScan
 public class Application {
 
 	@Bean
