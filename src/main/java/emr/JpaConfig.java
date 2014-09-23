@@ -58,18 +58,8 @@ public class JpaConfig {
         hibernateJpaVendorAdapter.setShowSql(true);
         entityManagerFactory.setJpaVendorAdapter(hibernateJpaVendorAdapter);
         entityManagerFactory.setPackagesToScan("emr.acl");
-        entityManagerFactory.setPersistenceUnitName("aclPersistenceUnit");
-        
-        Properties jpaProperties = new Properties();
-        jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        jpaProperties.put("hibernate.max_fetch_depth", 3);
-        jpaProperties.put("hibernate.jdbc.fetch_size", 50);
-        jpaProperties.put("hibernate.jdbc.batch_size", 10);
-        jpaProperties.put("hibernate.show_sql", true);
-        jpaProperties.put("hibernate.generateDdl", false);
-        jpaProperties.put("hibernate.hbm2ddl.auto", "update");
-        
-        entityManagerFactory.setJpaProperties(jpaProperties);
+        entityManagerFactory.setPersistenceUnitName("acl-postgresql");
+        entityManagerFactory.setPersistenceXmlLocation("classpath:META-INF/jpa-persistence.xml");
         entityManagerFactory.afterPropertiesSet();
     	return entityManagerFactory.getObject();
     }
