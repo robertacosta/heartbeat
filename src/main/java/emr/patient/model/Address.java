@@ -1,4 +1,4 @@
-package emr.patient;
+package emr.patient.model;
 
 public class Address {
 	private String streetAddress;

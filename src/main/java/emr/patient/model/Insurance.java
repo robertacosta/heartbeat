@@ -1,4 +1,4 @@
-package emr.patient;
+package emr.patient.model;
 
 public class Insurance {
 	private String name;

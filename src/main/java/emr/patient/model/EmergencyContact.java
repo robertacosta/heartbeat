@@ -1,4 +1,4 @@
-package emr.patient;
+package emr.patient.model;
 
 public class EmergencyContact {
 	private String name;

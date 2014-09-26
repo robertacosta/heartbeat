@@ -1,4 +1,4 @@
-package emr.patient;
+package emr.patient.model;
 
 import org.springframework.data.annotation.Id;
 

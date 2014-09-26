@@ -1,4 +1,4 @@
-package emr.acl;
+package emr.acl.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import org.joda.time.LocalDate;
 
 @Entity
 @Table(
@@ -44,6 +46,9 @@ public class Principle {
 	
 	@Column(name="email", nullable = false, length = 50)
 	private String email;
+	
+	@Column(name="last_password_change")
+	private LocalDate lastPasswordChange;
 	
 	@ElementCollection
 	private Set<String> patientIds = new HashSet<String>();
@@ -101,5 +106,11 @@ public class Principle {
 	}
 	public void setPatientIds(Set<String> patientIds) {
 		this.patientIds = patientIds;
+	}
+	public LocalDate getLastPasswordChange() {
+		return lastPasswordChange;
+	}
+	public void setLastPasswordChange(LocalDate lastPasswordChange) {
+		this.lastPasswordChange = lastPasswordChange;
 	}
 }
