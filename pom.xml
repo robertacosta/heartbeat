@@ -109,9 +109,17 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 		</dependency>
 		
+		<!-- Joda -->
         <dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
+		</dependency>
+		
+		<!-- JSP -->
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
 		</dependency>        
 	</dependencies>
 	<profiles>
