@@ -2,7 +2,7 @@
 <%@page session="true"%>
 <html>
 <head>
-<title>Login Page</title>
+<title>Create User</title>
 <style>
 body {
 	font-family: Arial, Helvetica, sans-serif;
@@ -39,29 +39,35 @@ body {
 }
 </style>
 </head>
-<body onload='document.loginForm.username.focus();'>
+<body onload='document.createUserForm.firstname.focus();'>
 	<div id="login-box">
  
-		<h3>Heartbeat Admin Login</h3>
+		<h3>Create a User</h3>
  
-		<c:if test="${not empty error}">
-			<div class="error">${error}</div>
-		</c:if>
-		<c:if test="${not empty msg}">
-			<div class="msg">${msg}</div>
-		</c:if>
  
-		<form name='loginForm'
-		  action="<c:url value='/j_spring_security_check' />" method='POST'>
+		<form name='createUserForm'
+		  action="<c:url value='/admin/user/add' />" method='POST'>
  
 		<table>
 			<tr>
-				<td>User:</td>
+				<td>First Name:</td>
+				<td><input type='text' name='firstName'></td>
+			</tr>
+			<tr>
+				<td>Last Name:</td>
+				<td><input type='text' name='lastName'></td>
+			</tr>
+			<tr>
+				<td>Username:</td>
 				<td><input type='text' name='username'></td>
 			</tr>
 			<tr>
-				<td>Password:</td>
-				<td><input type='password' name='password' /></td>
+				<td>Email:</td>
+				<td><input type='text' name='email'></td>
+			</tr>
+			<tr>
+				<td>Job Title:</td>
+				<td><input type='text' name='jobTitle'></td>
 			</tr>
 			<tr>
 				<td colspan='2'><input name="submit" type="submit"

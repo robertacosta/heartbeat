@@ -12,8 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.joda.time.LocalDate;
-
 @Entity
 @Table(
         name="PRINCIPLE", 
@@ -48,7 +46,7 @@ public class Principle {
 	private String email;
 	
 	@Column(name="last_password_change")
-	private LocalDate lastPasswordChange;
+	private String lastPasswordChange;
 	
 	@ElementCollection
 	private Set<String> patientIds = new HashSet<String>();
@@ -107,10 +105,10 @@ public class Principle {
 	public void setPatientIds(Set<String> patientIds) {
 		this.patientIds = patientIds;
 	}
-	public LocalDate getLastPasswordChange() {
+	public String getLastPasswordChange() {
 		return lastPasswordChange;
 	}
-	public void setLastPasswordChange(LocalDate lastPasswordChange) {
+	public void setLastPasswordChange(String lastPasswordChange) {
 		this.lastPasswordChange = lastPasswordChange;
 	}
 }

@@ -11,4 +11,5 @@ import emr.acl.model.Principle;
 @RepositoryRestResource(collectionResourceRel = "user", path = "user")
 public interface PrincipleRepository extends JpaRepository<Principle, Long> {
 	List<Principle> findByUsername(@Param("username") String username);
+	List<Principle> findByRole(@Param("role") String role);
 }
