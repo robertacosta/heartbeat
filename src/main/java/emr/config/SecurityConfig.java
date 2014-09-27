@@ -31,7 +31,8 @@ public class SecurityConfig {
         		.antMatcher("/patient/**")
 		      	.authorizeRequests()
 		          .antMatchers("/patient/**").hasRole("USER")
-		          .and().httpBasic().realmName("Heartbeat");
+		          .and().csrf().disable()
+		          .httpBasic().realmName("Heartbeat");
         }
     }
     
@@ -43,11 +44,13 @@ public class SecurityConfig {
         		.antMatcher("/user/**")
 		      	.authorizeRequests()
 		          .antMatchers("/user/**").hasRole("ADMIN")
-		          .and().httpBasic().realmName("Heartbeat");
+		          .and().csrf().disable()
+		          .httpBasic().realmName("Heartbeat");
         }
     }
 
     @Configuration
+    @Order(3)
     public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
         @Override
