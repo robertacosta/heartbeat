@@ -48,6 +48,9 @@ public class Principle {
 	@Column(name="last_password_change")
 	private String lastPasswordChange;
 	
+	@Column(name="enabled")
+	private Boolean enabled;
+	
 	@ElementCollection
 	private Set<String> patientIds = new HashSet<String>();
 	
@@ -110,5 +113,11 @@ public class Principle {
 	}
 	public void setLastPasswordChange(String lastPasswordChange) {
 		this.lastPasswordChange = lastPasswordChange;
+	}
+	public Boolean getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 }

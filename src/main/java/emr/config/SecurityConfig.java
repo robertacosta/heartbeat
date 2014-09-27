@@ -1,5 +1,8 @@
 package emr.config;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,13 +17,23 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 public class SecurityConfig {
 	@Configuration
 	protected static class AuthenticationConfiguration extends GlobalAuthenticationConfigurerAdapter {
-	      @Override
-	      public void init(AuthenticationManagerBuilder auth) throws Exception {
-	          auth
-	          	.inMemoryAuthentication()
-	          		.withUser("robert").password("acosta").roles("USER").and()
-	                .withUser("admin").password("admin").roles("ADMIN");
-	      }
+		@Autowired
+		DataSource aclDataSource;
+		
+		@Override
+		public void init(AuthenticationManagerBuilder auth) throws Exception {
+			  auth.jdbcAuthentication().dataSource(aclDataSource)
+			  	.usersByUsernameQuery(
+		  				"select username,password,enabled from principle where username=?")
+		  		.authoritiesByUsernameQuery(
+		  				"select username, role from principle where username=?");
+
+			  if(System.getenv("OPENSHIFT_POSTGRESQL_DB_USERNAME") == null) {
+		          auth
+		          	.inMemoryAuthentication()
+		                .withUser("admin").password("admin").roles("ADMIN");
+			  }
+		  }
 	}
 
     @Configuration

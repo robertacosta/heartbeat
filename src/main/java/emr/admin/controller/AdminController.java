@@ -52,7 +52,7 @@ public class AdminController {
 	@RequestMapping(value = "/admin", method = RequestMethod.GET)
 	public ModelAndView adminPage() {
  
-		List<Principle> users = repo.findByRole("USER");
+		List<Principle> users = repo.findByRole("ROLE_USER");
 		
 		ModelAndView model = new ModelAndView();
 		model.addObject("users", users);
@@ -73,7 +73,8 @@ public class AdminController {
 	public String addContact(@ModelAttribute("user") Principle user, BindingResult result) {
 	    user.setPassword("something");
 	    user.setLastPasswordChange(LocalDate.now().toString(formatter));
-	    user.setRole("USER");
+	    user.setRole("ROLE_USER");
+	    user.setEnabled(true);
 		repo.save(user);
 	     
 	    return "redirect:/admin";
