@@ -1,5 +1,7 @@
 package emr.authorized.controller;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -34,12 +36,24 @@ public class AuthorizedController {
 		Principle user = adminRepo.findOne(userId);
 		Set<String> patientIds = user.getPatientIds();
 		List<Patient> patients = new ArrayList<Patient>();
-		for(String patientId : patientIds) {
-			patients.add(patientRepo.findOne(patientId));
+		for(String patientHref : patientIds) {
+			patients.add(patientRepo.findOne(getPatientId(patientHref)));
 		}
 		
         return patients;
     }
+	
+	private String getPatientId(String patientHref) {
+		try {
+			URL patientUrl = new URL(patientHref);
+			String path = patientUrl.getPath();
+			String[] pathElements = path.split("/");
+			return pathElements[pathElements.length - 1];
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	@RequestMapping(value="/patients", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
