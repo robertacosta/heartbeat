@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,21 +32,14 @@ public class AuthorizedController {
 	
 	@RequestMapping(value="/patients", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-    public Resources<Resource<Patient>> patientList(@RequestParam(value="userid", required=true) Long userId) {
+    public List<Patient> patientList(@RequestParam(value="userid", required=true) Long userId) {
 		Principle user = adminRepo.findOne(userId);
-//		List<PatientResource> resourceList = new ArrayList<PatientResource>();
-//		for(String patientHref : user.getPatientIds()) {
-//			resourceList.add(new PatientResource(patientRepo.findOne(getPatientId(patientHref)), new Link(patientHref)));
-//		}
-//	
-//        return new PatientResources(resourceList);
-		
 		List<Patient> patients = new ArrayList<Patient>();
 		for(String patientHref : user.getPatientIds()) {
 			patients.add(patientRepo.findOne(getPatientId(patientHref)));
 		}
 		
-		return Resources.wrap(patients);
+		return patients;
     }
 	
 	private String getPatientId(String patientHref) {
