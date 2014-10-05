@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import emr.acl.model.Principle;
 import emr.acl.repository.PrincipleRepository;
 import emr.authorized.model.AddPatientModel;
-import emr.patient.hateoas.PatientResource;
-import emr.patient.hateoas.PatientResources;
+import emr.patient.model.Patient;
 import emr.patient.repository.PatientRepository;
 
 @RestController
@@ -34,14 +34,21 @@ public class AuthorizedController {
 	
 	@RequestMapping(value="/patients", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-    public PatientResources patientList(@RequestParam(value="userid", required=true) Long userId) {
+    public Resources<Resource<Patient>> patientList(@RequestParam(value="userid", required=true) Long userId) {
 		Principle user = adminRepo.findOne(userId);
-		List<PatientResource> resourceList = new ArrayList<PatientResource>();
+//		List<PatientResource> resourceList = new ArrayList<PatientResource>();
+//		for(String patientHref : user.getPatientIds()) {
+//			resourceList.add(new PatientResource(patientRepo.findOne(getPatientId(patientHref)), new Link(patientHref)));
+//		}
+//	
+//        return new PatientResources(resourceList);
+		
+		List<Patient> patients = new ArrayList<Patient>();
 		for(String patientHref : user.getPatientIds()) {
-			resourceList.add(new PatientResource(patientRepo.findOne(getPatientId(patientHref)), new Link(patientHref)));
+			patients.add(patientRepo.findOne(getPatientId(patientHref)));
 		}
-	
-        return new PatientResources(resourceList);
+		
+		return Resources.wrap(patients);
     }
 	
 	private String getPatientId(String patientHref) {
