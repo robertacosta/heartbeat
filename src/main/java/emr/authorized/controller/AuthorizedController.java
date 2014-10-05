@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import emr.acl.model.Principle;
 import emr.acl.repository.PrincipleRepository;
 import emr.authorized.model.AddPatientModel;
-import emr.patient.model.Patient;
+import emr.patient.hateoas.PatientResource;
+import emr.patient.hateoas.PatientResources;
 import emr.patient.repository.PatientRepository;
 
 @RestController
@@ -32,15 +34,14 @@ public class AuthorizedController {
 	
 	@RequestMapping(value="/patients", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-    public List<Patient> patientList(@RequestParam(value="userid", required=true) Long userId) {
+    public PatientResources patientList(@RequestParam(value="userid", required=true) Long userId) {
 		Principle user = adminRepo.findOne(userId);
-		Set<String> patientIds = user.getPatientIds();
-		List<Patient> patients = new ArrayList<Patient>();
-		for(String patientHref : patientIds) {
-			patients.add(patientRepo.findOne(getPatientId(patientHref)));
+		List<PatientResource> resourceList = new ArrayList<PatientResource>();
+		for(String patientHref : user.getPatientIds()) {
+			resourceList.add(new PatientResource(patientRepo.findOne(getPatientId(patientHref)), new Link(patientHref)));
 		}
-		
-        return patients;
+	
+        return new PatientResources(resourceList);
     }
 	
 	private String getPatientId(String patientHref) {
