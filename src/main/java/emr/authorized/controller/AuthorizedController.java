@@ -52,4 +52,16 @@ public class AuthorizedController {
 		}
         return user;
     }
+	
+	@RequestMapping(value="/patients", method=RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
+	public Principle deletePatientFromList(@RequestBody AddPatientModel model) {
+		Principle user = adminRepo.findOne(model.getUserId());
+		Set<String> patientIds = user.getPatientIds();
+		if(!patientIds.contains(model.getPatientId())) {
+			patientIds.remove(model.getPatientId());
+			adminRepo.save(user);
+		}
+        return user;
+    }
 }
