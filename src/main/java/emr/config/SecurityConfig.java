@@ -61,14 +61,24 @@ public class SecurityConfig {
 		          .httpBasic().realmName("Heartbeat");
         }
     }
-
+    
     @Configuration
     @Order(3)
-    public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
-
-        @Override
+    public static class AuthorizedWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {
-        	
+        	http.csrf().disable()
+        		.antMatcher("/authorized/**")
+		      	.authorizeRequests()
+		          .antMatchers("/authorized/**").hasAnyRole("ADMIN", "USER")
+		          .and().csrf().disable()
+		          .httpBasic().realmName("Heartbeat");
+        }
+    }
+
+    @Configuration
+    @Order(4)
+    public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+        protected void configure(HttpSecurity http) throws Exception {  	
         	http
     	  	.authorizeRequests()
               .antMatchers("/admin/**").hasRole("ADMIN")
@@ -86,7 +96,7 @@ public class SecurityConfig {
               .and()
     		  	.exceptionHandling().accessDeniedPage("/403")
               .and()
-              	.csrf();
+              	.csrf().disable();
         }
     }
 }
