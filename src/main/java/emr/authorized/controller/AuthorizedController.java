@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import emr.acl.model.Principle;
 import emr.acl.repository.PrincipleRepository;
-import emr.authorized.model.AddPatientModel;
+import emr.assessment.model.Assessment;
+import emr.assessment.repository.AssessmentRepository;
+import emr.authorized.model.AssociateAssessmentModel;
+import emr.authorized.model.AssociatePatientModel;
 import emr.patient.model.Patient;
 import emr.patient.repository.PatientRepository;
 
@@ -30,6 +33,9 @@ public class AuthorizedController {
 	@Autowired
 	PatientRepository patientRepo;
 	
+	@Autowired
+	AssessmentRepository assessmentRepo;
+	
 	// Returns the list of Patients that are assigned to a nurse
 	@RequestMapping(value="/patients", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
@@ -37,14 +43,14 @@ public class AuthorizedController {
 		Principle user = adminRepo.findOne(userId);
 		List<Patient> patients = new ArrayList<Patient>();
 		for(String patientHref : user.getPatientIds()) {
-			patients.add(patientRepo.findOne(getPatientId(patientHref)));
+			patients.add(patientRepo.findOne(getId(patientHref)));
 		}
 		
 		return patients;
     }
 	
 	// Strips the patient ID from the end of the resource HREF
-	private String getPatientId(String patientHref) {
+	private String getId(String patientHref) {
 		try {
 			URL patientUrl = new URL(patientHref);
 			String path = patientUrl.getPath();
@@ -59,7 +65,7 @@ public class AuthorizedController {
 	// Assigns a patient to a nurse
 	@RequestMapping(value="/patients", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public Principle addPatientToList(@RequestBody AddPatientModel model) {
+	public Principle addPatientToList(@RequestBody AssociatePatientModel model) {
 		Principle user = adminRepo.findOne(model.getUserId());
 		Set<String> patientIds = user.getPatientIds();
 		if(!patientIds.contains(model.getPatientId())) {
@@ -72,13 +78,52 @@ public class AuthorizedController {
 	// Removes a patient from a nurse
 	@RequestMapping(value="/patients", method=RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.OK)
-	public Principle deletePatientFromList(@RequestBody AddPatientModel model) {
+	public Principle deletePatientFromList(@RequestBody AssociatePatientModel model) {
 		Principle user = adminRepo.findOne(model.getUserId());
 		Set<String> patientIds = user.getPatientIds();
-		if(!patientIds.contains(model.getPatientId())) {
+		if(patientIds.contains(model.getPatientId())) {
 			patientIds.remove(model.getPatientId());
 			adminRepo.save(user);
 		}
         return user;
+    }
+	
+	// Returns the list of Patient assessments
+	@RequestMapping(value="/assessments", method=RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+    public List<Assessment> assessmentList(@RequestParam(value="patientid", required=true) String userId) {
+		Patient patient = patientRepo.findOne(userId);
+		List<Assessment> assessments = new ArrayList<Assessment>();
+		for(String assessmentHref : patient.getAssessments()) {
+			assessments.add(assessmentRepo.findOne(getId(assessmentHref)));
+		}
+		
+		return assessments;
+    }
+	
+	// Associate an assessment to a patient
+	@RequestMapping(value="/assessments", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
+	public Patient addAssessmentToPatient(@RequestBody AssociateAssessmentModel model) {
+		Patient patient = patientRepo.findOne(model.getPatientId());
+		List<String> assessmentIds = patient.getAssessments();
+		if(!assessmentIds.contains(model.getAssessmentId())) {
+			assessmentIds.add(model.getAssessmentId());
+			patientRepo.save(patient);
+		}
+        return patient;
+    }
+	
+	// Remove an association of an assessment from a patient
+	@RequestMapping(value="/assessments", method=RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
+	public Patient deleteAssessmentFromPatient(@RequestBody AssociateAssessmentModel model) {
+		Patient patient = patientRepo.findOne(model.getPatientId());
+		List<String> assessmentIds = patient.getAssessments();
+		if(assessmentIds.contains(model.getAssessmentId())) {
+			assessmentIds.remove(model.getAssessmentId());
+			patientRepo.save(patient);
+		}
+        return patient;
     }
 }

@@ -1,8 +1,8 @@
 package emr.authorized.model;
 
-public class AddPatientModel {
-	Long userId;
-	String patientId;
+public class AssociatePatientModel {
+	private Long userId;
+	private String patientId;
 	
 	public Long getUserId() {
 		return userId;
