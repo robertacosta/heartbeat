@@ -3,9 +3,9 @@ package emr.assessment.model;
 import org.springframework.data.annotation.Id;
 
 public class Assessment {
-	@Id public String id;
-	public String date;
-	public String time;
+	@Id private String id;
+	private String date;
+	private String time;
 	
 	private Neurological nuerological;
 	private Respiratory respiratory;
