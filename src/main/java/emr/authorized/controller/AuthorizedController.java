@@ -30,6 +30,7 @@ public class AuthorizedController {
 	@Autowired
 	PatientRepository patientRepo;
 	
+	// Returns the list of Patients that are assigned to a nurse
 	@RequestMapping(value="/patients", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
     public List<Patient> patientList(@RequestParam(value="userid", required=true) Long userId) {
@@ -42,6 +43,7 @@ public class AuthorizedController {
 		return patients;
     }
 	
+	// Strips the patient ID from the end of the resource HREF
 	private String getPatientId(String patientHref) {
 		try {
 			URL patientUrl = new URL(patientHref);
@@ -54,6 +56,7 @@ public class AuthorizedController {
 		return null;
 	}
 	
+	// Assigns a patient to a nurse
 	@RequestMapping(value="/patients", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Principle addPatientToList(@RequestBody AddPatientModel model) {
@@ -66,6 +69,7 @@ public class AuthorizedController {
         return user;
     }
 	
+	// Removes a patient from a nurse
 	@RequestMapping(value="/patients", method=RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.OK)
 	public Principle deletePatientFromList(@RequestBody AddPatientModel model) {

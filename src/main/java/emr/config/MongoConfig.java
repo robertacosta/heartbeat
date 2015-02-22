@@ -13,7 +13,7 @@ import com.mongodb.MongoClient;
 
 @Configuration
 @EnableMongoRepositories(
-		basePackages = { "emr.patient" })
+		basePackages = { "emr.patient", "emr.assessment" })
 public class MongoConfig {
 	@Bean
 	public MongoTemplate mongoTemplate() throws Exception {

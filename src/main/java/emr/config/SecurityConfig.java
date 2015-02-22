@@ -51,6 +51,19 @@ public class SecurityConfig {
     
     @Configuration
     @Order(2)
+    public static class AssessmentWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+        protected void configure(HttpSecurity http) throws Exception {
+        	http
+        		.antMatcher("/assessment/**")
+		      	.authorizeRequests()
+		          .antMatchers("/assessment/**").hasRole("USER")
+		          .and().csrf().disable()
+		          .httpBasic().realmName("Heartbeat");
+        }
+    }
+    
+    @Configuration
+    @Order(3)
     public static class UserWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {
         	http
@@ -63,10 +76,10 @@ public class SecurityConfig {
     }
     
     @Configuration
-    @Order(3)
+    @Order(4)
     public static class AuthorizedWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {
-        	http.csrf().disable()
+        	http
         		.antMatcher("/authorized/**")
 		      	.authorizeRequests()
 		          .antMatchers("/authorized/**").hasAnyRole("ADMIN", "USER")
@@ -76,7 +89,7 @@ public class SecurityConfig {
     }
 
     @Configuration
-    @Order(4)
+    @Order(5)
     public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
         protected void configure(HttpSecurity http) throws Exception {  	
         	http
