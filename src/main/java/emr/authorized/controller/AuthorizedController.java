@@ -42,8 +42,11 @@ public class AuthorizedController {
     public List<Patient> patientList(@RequestParam(value="userid", required=true) Long userId) {
 		Principle user = adminRepo.findOne(userId);
 		List<Patient> patients = new ArrayList<Patient>();
-		for(String patientHref : user.getPatientIds()) {
-			patients.add(patientRepo.findOne(getId(patientHref)));
+		Set<String> patientIds = user.getPatientIds();
+		if(patientIds != null) {
+			for(String patientHref : patientIds) {
+				patients.add(patientRepo.findOne(getId(patientHref)));
+			}
 		}
 		
 		return patients;
@@ -94,8 +97,11 @@ public class AuthorizedController {
     public List<Assessment> assessmentList(@RequestParam(value="patientid", required=true) String userId) {
 		Patient patient = patientRepo.findOne(userId);
 		List<Assessment> assessments = new ArrayList<Assessment>();
-		for(String assessmentHref : patient.getAssessments()) {
-			assessments.add(assessmentRepo.findOne(getId(assessmentHref)));
+		List<String> assessmentIds = patient.getAssessments();
+		if(assessmentIds != null) {
+			for(String assessmentHref : assessmentIds) {
+				assessments.add(assessmentRepo.findOne(getId(assessmentHref)));
+			}
 		}
 		
 		return assessments;
