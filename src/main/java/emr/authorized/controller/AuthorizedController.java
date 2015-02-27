@@ -107,29 +107,32 @@ public class AuthorizedController {
 		return assessments;
     }
 	
-	// Associate an assessment to a patient
+	// Creates a new assessment and associates it to a patient
 	@RequestMapping(value="/assessments", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public Patient addAssessmentToPatient(@RequestBody AssociateAssessmentModel model) {
+	public Assessment addAssessment(@RequestBody AssociateAssessmentModel model) {
+		Assessment createdAssessment = assessmentRepo.save(model.getAssessment());
 		Patient patient = patientRepo.findOne(model.getPatientId());
 		List<String> assessmentIds = patient.getAssessments();
-		if(!assessmentIds.contains(model.getAssessmentId())) {
-			assessmentIds.add(model.getAssessmentId());
-			patientRepo.save(patient);
-		}
-        return patient;
-    }
+		assessmentIds.add(createdAssessment.getId());
+		patientRepo.save(patient);
+
+		return createdAssessment;
+	}
 	
-	// Remove an association of an assessment from a patient
+	// Removes an assessment from a patient and deletes it
 	@RequestMapping(value="/assessments", method=RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.OK)
-	public Patient deleteAssessmentFromPatient(@RequestBody AssociateAssessmentModel model) {
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public Patient deleteAssessment(@RequestBody AssociateAssessmentModel model) {
 		Patient patient = patientRepo.findOne(model.getPatientId());
 		List<String> assessmentIds = patient.getAssessments();
-		if(assessmentIds.contains(model.getAssessmentId())) {
-			assessmentIds.remove(model.getAssessmentId());
+		Assessment deletedAssement = model.getAssessment();
+		if(assessmentIds.contains(deletedAssement.getId())) {
+			assessmentIds.remove(deletedAssement.getId());
 			patientRepo.save(patient);
+			assessmentRepo.delete(deletedAssement);
 		}
-        return patient;
-    }
+
+		return patient;
+	}
 }

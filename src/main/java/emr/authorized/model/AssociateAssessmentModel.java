@@ -1,14 +1,16 @@
 package emr.authorized.model;
 
+import emr.assessment.model.Assessment;
+
 public class AssociateAssessmentModel {
-	private String assessmentId;
+	private Assessment assessment;
 	private String patientId;
 	
-	public String getAssessmentId() {
-		return assessmentId;
+	public Assessment getAssessment() {
+		return assessment;
 	}
-	public void setAssessmentId(String assessmentId) {
-		this.assessmentId = assessmentId;
+	public void setAssessment(Assessment assessment) {
+		this.assessment = assessment;
 	}
 	public String getPatientId() {
 		return patientId;
