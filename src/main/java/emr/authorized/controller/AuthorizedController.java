@@ -108,7 +108,7 @@ public class AuthorizedController {
     }
 	
 	// Creates a new assessment and associates it to a patient
-	@RequestMapping(value="/assessments", method=RequestMethod.POST)
+	@RequestMapping(value="/assessment", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Assessment addAssessment(@RequestBody AssociateAssessmentModel model) {
 		Assessment createdAssessment = assessmentRepo.save(model.getAssessment());
@@ -121,7 +121,7 @@ public class AuthorizedController {
 	}
 	
 	// Removes an assessment from a patient and deletes it
-	@RequestMapping(value="/assessments", method=RequestMethod.DELETE)
+	@RequestMapping(value="/assessment", method=RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public Patient deleteAssessment(@RequestBody AssociateAssessmentModel model) {
 		Patient patient = patientRepo.findOne(model.getPatientId());
