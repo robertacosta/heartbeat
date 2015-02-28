@@ -24,6 +24,9 @@ import emr.authorized.model.AssociatePatientModel;
 import emr.patient.model.Patient;
 import emr.patient.repository.PatientRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 @RequestMapping("/authorized")
 public class AuthorizedController {
@@ -128,6 +131,9 @@ public class AuthorizedController {
 	@RequestMapping(value="/assessment", method=RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public Patient deleteAssessment(@RequestBody AssociateAssessmentModel model) {
+		Logger logger = LoggerFactory.getLogger(AuthorizedController.class);
+	    logger.info("DELETE Assessment: %s from Patient: %s", model.getAssessment().getId(), model.getPatientId());
+
 		Patient patient = patientRepo.findOne(model.getPatientId());
 		List<String> assessmentIds = patient.getAssessments();
 		Assessment deletedAssement = model.getAssessment();
