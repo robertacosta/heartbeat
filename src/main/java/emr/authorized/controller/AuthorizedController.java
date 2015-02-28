@@ -114,6 +114,9 @@ public class AuthorizedController {
 		Assessment createdAssessment = assessmentRepo.save(model.getAssessment());
 		Patient patient = patientRepo.findOne(model.getPatientId());
 		List<String> assessmentIds = patient.getAssessments();
+		if(assessmentIds == null) {
+			assessmentIds = new ArrayList<String>();
+		}
 		assessmentIds.add(createdAssessment.getId());
 		patientRepo.save(patient);
 
