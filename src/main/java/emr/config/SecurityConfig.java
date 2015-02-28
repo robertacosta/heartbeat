@@ -35,6 +35,42 @@ public class SecurityConfig {
 			  }
 		  }
 	}
+	
+//	@Configuration
+//    @EnableResourceServer
+//    @EnableAuthorizationServer
+//    static class OAuth2Configuration extends AuthorizationServerConfigurerAdapter {
+//
+//		@Autowired
+//		DataSource aclDataSource;
+//		
+//        private final String applicationName = "emr";
+//
+//        /**
+//         * This is required for password grants, which we specify below as one of the  {@literal authorizedGrantTypes()}.
+//         */
+//        @Autowired
+//        private AuthenticationManager authenticationManager;
+//
+//        @Override
+//        public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+//            endpoints.authenticationManager(authenticationManager);
+//        }
+//
+//        @Override
+//        public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+//            //clients.jdbc(aclDataSource).
+//        	
+//        	clients.inMemory()
+//                    .withClient("android-crm")
+//                    .authorizedGrantTypes("password", "authorization_code", "refresh_token")
+//                    .authorities("ROLE_USER")
+//                    .scopes("write")
+//                    .resourceIds(applicationName)
+//                    .secret("123456");
+//        }
+//    }
+
 
     @Configuration
     @Order(1)
