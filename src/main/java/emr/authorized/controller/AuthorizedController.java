@@ -128,8 +128,8 @@ public class AuthorizedController {
 	}
 	
 	// Removes an assessment from a patient and deletes it
-	@RequestMapping(value="/assessment", method=RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@RequestMapping(value="/assessment", method=RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.OK)
 	public Patient deleteAssessment(@RequestBody AssociateAssessmentModel model) {
 		Logger logger = LoggerFactory.getLogger(AuthorizedController.class);
 	    logger.info("DELETE Assessment: %s from Patient: %s", model.getAssessment().getId(), model.getPatientId());
