@@ -99,8 +99,8 @@ public class AuthorizedController {
 		List<Assessment> assessments = new ArrayList<Assessment>();
 		List<String> assessmentIds = patient.getAssessments();
 		if(assessmentIds != null) {
-			for(String assessmentHref : assessmentIds) {
-				assessments.add(assessmentRepo.findOne(getId(assessmentHref)));
+			for(String assessmentId : assessmentIds) {
+				assessments.add(assessmentRepo.findOne(assessmentId));
 			}
 		}
 		
