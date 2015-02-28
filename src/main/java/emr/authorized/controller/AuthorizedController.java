@@ -118,6 +118,7 @@ public class AuthorizedController {
 			assessmentIds = new ArrayList<String>();
 		}
 		assessmentIds.add(createdAssessment.getId());
+		patient.setAssessments(assessmentIds);
 		patientRepo.save(patient);
 
 		return createdAssessment;
