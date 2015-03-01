@@ -42,8 +42,12 @@ public class AuthorizedController {
 	// If someone can access this endpoint, they have permission to use the EMR
 	@RequestMapping(value="/verify", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-    public boolean verify() {
-		return true;
+    public Principle verify(@RequestParam(value="username", required=true) String username) {
+		List<Principle> users = adminRepo.findByUsername(username);
+		if(users.size() == 1) {
+			return users.get(0);
+		}
+		return null;
     }
 
 	// Returns the list of Patients that are assigned to a nurse
