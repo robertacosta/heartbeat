@@ -82,7 +82,7 @@ public class AuthorizedController {
     }
 	
 	// Removes a patient from a nurse
-	@RequestMapping(value="/patients", method=RequestMethod.DELETE)
+	@RequestMapping(value="/patients", method=RequestMethod.PUT)
 	@ResponseStatus(HttpStatus.OK)
 	public Principle deletePatientFromList(@RequestBody AssociatePatientModel model) {
 		Principle user = adminRepo.findOne(model.getUserId());
