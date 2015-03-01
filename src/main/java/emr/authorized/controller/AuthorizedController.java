@@ -39,6 +39,13 @@ public class AuthorizedController {
 	@Autowired
 	AssessmentRepository assessmentRepo;
 	
+	// If someone can access this endpoint, they have permission to use the EMR
+	@RequestMapping(value="/verify", method=RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+    public boolean verify() {
+		return true;
+    }
+
 	// Returns the list of Patients that are assigned to a nurse
 	@RequestMapping(value="/patients", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
