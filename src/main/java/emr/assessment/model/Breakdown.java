@@ -5,6 +5,14 @@ public class Breakdown {
 	private boolean drainage;
 	private boolean redness;
 	private boolean dressing;
+	private String stage;
+
+	public String getStage() {
+		return stage;
+	}
+	public void setStage(String stage) {
+		this.stage = stage;
+	}
 	
 	public String getSite() {
 		return site;
