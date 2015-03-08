@@ -7,6 +7,7 @@ The patient web services use HATEOAS standards for aiding in self discovery of t
 ### GET - http://jbossews-projectemr.rhcloud.com/emr/patient{?page,size,sort}
 
 Provides a listing of all patients in a paged format.
+
 Query Parameters:
 * Size integer - The size of the page (default 20).
 * Page integer - The page number to view (default 0).
@@ -15,6 +16,7 @@ Query Parameters:
 ### POST - http://jbossews-projectemr.rhcloud.com/emr/patient
 
 Add a new patient to the database.
+
 Example Request BODY:
 ```
 {
@@ -61,8 +63,10 @@ Response Status Code - 201
 
 ### GET - http://jbossews-projectemr.rhcloud.com/emr/patient/[id]
 Returns the data about one specific patient.
+
 URL params:
 * ID string - A UUID created by the database to uniquely identify a patient
+
 Response:
 ```
 {
@@ -116,8 +120,10 @@ Response Status Code - 200
 
 ### PUT - http://jbossews-projectemr.rhcloud.com/emr/patient/[id]
 Updates the data about one specific patient.
+
 URL params:
 * ID string - A UUID created by the database to uniquely identify a patient
+
 Request BODY:
 ```
 See Request BODY from POST example above
@@ -126,15 +132,19 @@ Response Status Code - 204
 
 ### DELETE - http://jbossews-projectemr.rhcloud.com/emr/patient/[id]
 Deletes a specific patient from the database.
+
 URL params:
 * ID string - A UUID created by the database to uniquely identify a patient
+
 Response Status Code - 204
 
 ### GET - https://jbossews-projectemr.rhcloud.com/emr/patient/search/findByFirstNameAndLastName{?first_name,last_name}
 Allows for searching for specific patients by their first and last name.
+
 Query parameters:
 * first_name string - First name of a patient
 * last_name string - Last name of a patient
+
 Example Response:
 ```
 {
@@ -192,8 +202,10 @@ Response Code - 200
 
 ### GET - https://jbossews-projectemr.rhcloud.com/emr/patient/search/findByLastName{?last_name}
 Allows for searching of patients with only their last name.
+
 Query parameters:
 * last_name string - Last name of a patient
+
 Response:
 ```
 See response from findByFirstNameAndLastName
@@ -204,6 +216,7 @@ The assessment web services use HATEOAS standards for aiding in self discovery o
 
 ### GET - http://jbossews-projectemr.rhcloud.com/emr/assessment[?size=1[&page=0]][&sort=asc]
 Provides a listing of all assessments in a paged format.
+
 Query Parameters:
 * Size integer - The size of the page (default 20).
 * Page integer - The page number to view (default 0).
@@ -211,6 +224,7 @@ Query Parameters:
 
 ### POST - http://jbossews-projectemr.rhcloud.com/emr/assessment
 Add a new assessment to the database.
+
 Example Request BODY:
 ```
 {
@@ -333,8 +347,10 @@ Response Status Code - 201
 
 ### GET - http://jbossews-projectemr.rhcloud.com/emr/assessment/[id]
 Returns the data about one specific assessment.
+
 URL params:
 * ID string - A UUID created by the database to uniquely identify an assessment
+
 Response:
 ```
 {
@@ -463,8 +479,10 @@ Response Status Code - 200
 
 ### PUT - http://jbossews-projectemr.rhcloud.com/emr/assessment/[id]
 Updates the data about one specific assessment.
+
 URL params:
 * ID string - A UUID created by the database to uniquely identify an assessment
+
 Request BODY:
 ```
 See Request BODY from POST example above
@@ -482,6 +500,7 @@ The user web services use HATEOAS standards for aiding in self discovery of the 
 
 ### GET - http://jbossews-projectemr.rhcloud.com/emr/user[?size=1[&page=0]][&sort=asc]
 Provides a listing of all users in a paged format.
+
 Query Parameters:
 * Size integer - The size of the page (default 20).
 * Page integer - The page number to view (default 0).
@@ -489,6 +508,7 @@ Query Parameters:
 
 ### POST - http://jbossews-projectemr.rhcloud.com/emr/user
 Add a new user to the database.
+
 Example Request BODY:
 ```
 {
@@ -507,8 +527,10 @@ Response Status Code - 201
 
 ### GET - http://jbossews-projectemr.rhcloud.com/emr/user/[id]
 Returns the data about one specific user.
+
 URL params:
 * ID string - An ID created by the database to uniquely identify an user
+
 Response:
 ```
 {
@@ -533,8 +555,10 @@ Response Status Code - 200
 
 ### PUT - http://jbossews-projectemr.rhcloud.com/emr/user/[id]
 Updates the data about one specific user.
+
 URL params:
 * ID string - An ID created by the database to uniquely identify an user
+
 Request BODY:
 ```
 {
@@ -560,14 +584,18 @@ Response Status Code - 204
 
 ### DELETE - http://jbossews-projectemr.rhcloud.com/emr/user/[id]
 Deletes a specific user from the database.
+
 URL params:
 * ID string - An ID created by the database to uniquely identify an user
+
 Response Status Code - 204
 
 ### GET - https://jbossews-projectemr.rhcloud.com/emr/user/search/findByUsername{?username}
 Request for a list of users searching by username.
+
 Query parameter:
 * username string - Username to search for
+
 Response:
 ```
  "_embedded" : {
@@ -595,8 +623,10 @@ Response Status Code - 200
 
 ### GET - https://jbossews-projectemr.rhcloud.com/emr/user/search/findByRole{?role}
 Gets a list of users by their role.
+
 Query parameter:
 * role string - A role such as ROLE_USER
+
 Response:
 ```
 {
@@ -644,8 +674,10 @@ The authorized web services associate the data from the user, patient, and asses
 
 ### GET - https://jbossews-projectemr.rhcloud.com/emr/authorized/verify?username
 Used to verify a username belongs to the system at login.
+
 Query parameters:
 * username string REQUIRED - The username of the user attempting to login.
+
 Response:
 ```
 {
@@ -669,8 +701,10 @@ Response Status Code - 200
 
 ### GET - https://jbossews-projectemr.rhcloud.com/emr/authorized/patients?userid
 Returns a listing of patients assigned to a specific user.
+
 Query parameters:
 * userid int REQUIRED - The user ID that we wish to get assigned patients list
+
 Response:
 ```
 A listing of patients (see single patient response above)
@@ -679,6 +713,7 @@ Response Status Code - 200
 
 ### POST - https://jbossews-projectemr.rhcloud.com/emr/authorized/patients
 Adds a patient to a user’s roster.
+
 Request BODY:
 ```
 {
@@ -694,6 +729,7 @@ Response Status Code - 201
 
 ### PUT - https://jbossews-projectemr.rhcloud.com/emr/authorized/patients
 Removes a patient from a user’s roster.
+
 Request BODY:
 ```
 {
@@ -709,8 +745,10 @@ Response Status Code - 200
 
 ### GET - https://jbossews-projectemr.rhcloud.com/emr/authorized/assessments?patientid
 Returns a listing of assessments for a specific patient
+
 Query Parameters:
 * patientid string REQUIRED - The UUID of the patient
+
 Response:
 ```
 A listing of assessments (see single assessment response above)
@@ -719,6 +757,7 @@ Response Status Code - 200
 
 ### POST - https://jbossews-projectemr.rhcloud.com/emr/authorized/assessment
 Creates an assessment and associates it to a patient
+
 Request Body:
 ```
 {
@@ -734,6 +773,7 @@ Response Status Code - 201
 
 ### PUT - https://jbossews-projectemr.rhcloud.com/emr/authorized/assessment
 Deletes an assessment and disassociates it from a patient
+
 Request Body:
 ```
 {
