@@ -78,29 +78,10 @@ public class AdminController {
 	
 	@RequestMapping(value = "admin/user/add", method = RequestMethod.POST)
 	public String addContact(@ModelAttribute("user") Principle user, BindingResult result) {
-		Logger logger = LoggerFactory.getLogger(AdminController.class);
-
-		String password = RandomStringUtils.random(8, true, true);
-
-		SendGrid sendgrid = new SendGrid("***REMOVED***", "***REMOVED***");
-		SendGrid.Email email = new SendGrid.Email();
-		email.addTo(user.getEmail());
-		email.setFrom("robert.j.acosta@gmail.com");
-		email.setSubject("Welcome to Heartbeat EMR.  Your user credentials have been created!");
-		email.setHtml(user.getFirstName());
-
-		email.getSMTPAPI().addFilter("templates", "enable", 1);
-		email.getSMTPAPI().addFilter("templates", "template_id", "51456924-4eb2-4cee-8609-157d56a6d26d");
-		email.getSMTPAPI().addSubstitution("-username-", user.getUsername());
-		email.getSMTPAPI().addSubstitution("-password-", password);
-		try {
-			sendgrid.send(email);
-		} catch (SendGridException e) {
-			logger.error("Failed to email user with creds: " + e.getMessage());
-		}
-
-		StandardPasswordEncoder encoder = new StandardPasswordEncoder("Marissa");
-		String encodedPassword = encoder.encode(password);
+		String encodedPassword = generateNewPassword(user, 
+			"Welcome to Heartbeat EMR.  Your user credentials have been created!", 
+			"51456924-4eb2-4cee-8609-157d56a6d26d"
+		);
 
 	    user.setPassword(encodedPassword);
 	    user.setLastPasswordChange(LocalDate.now().toString(formatter));
@@ -121,18 +102,24 @@ public class AdminController {
 	@RequestMapping(value = "/admin/user/reset", method = RequestMethod.POST)
 	public String adminUserResetPassword(@RequestParam("userid") Long userid) {
 		Principle user = repo.findOne(userid);
+		String encodedPassword = generateNewPassword(user, 
+			"Heartbeat EMR.  Your user credentials have been reset.", 
+			"441f3bfa-4b31-4a5e-ab6c-685d10570506"
+		);
+
+		user.setPassword(encodedPassword);
 		user.setLastPasswordChange(LocalDate.now().toString(formatter));
 		repo.save(user);
-		
+
 		return "redirect:/admin";
 	}
  
 	//for 403 access denied page
 	@RequestMapping(value = "/403", method = RequestMethod.GET)
 	public ModelAndView accesssDenied() {
- 
+
 	  ModelAndView model = new ModelAndView();
- 
+
 	  //check if user is login
 	  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	  if (!(auth instanceof AnonymousAuthenticationToken)) {
@@ -143,5 +130,36 @@ public class AdminController {
 	  model.setViewName("403");
 	  return model;
  
+	}
+
+	// Will generate a new password for the user, 
+	// send them an email with that new password, 
+	// and return the encrypted password
+	private String generateNewPassword(Principle user, String subject, String templateId) {
+		Logger logger = LoggerFactory.getLogger(AdminController.class);
+
+		String password = RandomStringUtils.random(8, true, true);
+
+		SendGrid sendgrid = new SendGrid("***REMOVED***", "***REMOVED***");
+		SendGrid.Email email = new SendGrid.Email();
+		email.addTo(user.getEmail());
+		email.setFrom("robert.j.acosta@gmail.com");
+		email.setSubject(subject);
+		email.setHtml(user.getFirstName());
+
+		email.getSMTPAPI().addFilter("templates", "enable", 1);
+		email.getSMTPAPI().addFilter("templates", "template_id", templateId);
+		email.getSMTPAPI().addSubstitution("-username-", user.getUsername());
+		email.getSMTPAPI().addSubstitution("-password-", password);
+		try {
+			sendgrid.send(email);
+		} catch (SendGridException e) {
+			logger.error("Failed to email user with creds: " + e.getMessage());
+		}
+
+		StandardPasswordEncoder encoder = new StandardPasswordEncoder("Marissa");
+		String encodedPassword = encoder.encode(password);
+
+		return encodedPassword;
 	}
 }
