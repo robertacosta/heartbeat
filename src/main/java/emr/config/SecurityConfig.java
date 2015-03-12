@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.configurers
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 
 @Configuration
@@ -22,7 +23,10 @@ public class SecurityConfig {
 		
 		@Override
 		public void init(AuthenticationManagerBuilder auth) throws Exception {
+			  StandardPasswordEncoder encoder = new StandardPasswordEncoder("Marissa");
+
 			  auth.jdbcAuthentication().dataSource(aclDataSource)
+			  	.passwordEncoder(encoder)
 			  	.usersByUsernameQuery(
 		  				"select username,password,enabled from principle where username=?")
 		  		.authoritiesByUsernameQuery(
