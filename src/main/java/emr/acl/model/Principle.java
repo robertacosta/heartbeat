@@ -34,7 +34,7 @@ public class Principle {
 	@Column(name="username", nullable = false, length = 30)
 	private String username;
 	
-	@Column(name="password", nullable = false, length = 50)
+	@Column(name="password", nullable = false, length = 80)
 	private String password;
 	
 	@Column(name="job_title", nullable = true, length = 30)
