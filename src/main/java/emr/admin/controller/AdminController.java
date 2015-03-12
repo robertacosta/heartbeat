@@ -30,12 +30,13 @@ import emr.acl.repository.PrincipleRepository;
  
 @Controller
 public class AdminController {
-	
+
 	@Autowired
 	PrincipleRepository repo;
-	
+
 	DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
-	
+	String salt = "Marissa";
+
 	//Spring Security see this :
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(
@@ -84,7 +85,7 @@ public class AdminController {
 		);
 
 	    user.setPassword(encodedPassword);
-	    user.setLastPasswordChange(LocalDate.now().toString(formatter));
+	    user.setLastPasswordChange(LocalDate.now().minusDays(90).toString(formatter));
 	    user.setRole("ROLE_USER");
 	    user.setEnabled(true);
 		repo.save(user);
@@ -108,7 +109,7 @@ public class AdminController {
 		);
 
 		user.setPassword(encodedPassword);
-		user.setLastPasswordChange(LocalDate.now().toString(formatter));
+		user.setLastPasswordChange(LocalDate.now().minusDays(90).toString(formatter));
 		repo.save(user);
 
 		return "redirect:/admin";
@@ -157,7 +158,7 @@ public class AdminController {
 			logger.error("Failed to email user with creds: " + e.getMessage());
 		}
 
-		StandardPasswordEncoder encoder = new StandardPasswordEncoder("Marissa");
+		StandardPasswordEncoder encoder = new StandardPasswordEncoder(salt);
 		String encodedPassword = encoder.encode(password);
 
 		return encodedPassword;

@@ -787,6 +787,22 @@ A patient (see single patient response above)
 ```
 Response Status Code - 200
 
+### PUT - https://jbossews-projectemr.rhcloud.com/emr/authorized/password
+Changes a user's password
+
+Request Body:
+```
+{
+    "usedid": 123,
+    "password": "example_password"
+}
+```
+Response:
+```
+A user (see single user response above)
+```
+Response Status Code - 200
+
 The OpenShift `jbossews` cartridge documentation can be found at:
 
 http://openshift.github.io/documentation/oo_cartridge_guide.html#tomcat

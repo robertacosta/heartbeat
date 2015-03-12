@@ -20,10 +20,12 @@ public class SecurityConfig {
 	protected static class AuthenticationConfiguration extends GlobalAuthenticationConfigurerAdapter {
 		@Autowired
 		DataSource aclDataSource;
-		
+
+		String salt = "Marissa";
+
 		@Override
 		public void init(AuthenticationManagerBuilder auth) throws Exception {
-			  StandardPasswordEncoder encoder = new StandardPasswordEncoder("Marissa");
+			  StandardPasswordEncoder encoder = new StandardPasswordEncoder(salt);
 
 			  auth.jdbcAuthentication().dataSource(aclDataSource)
 			  	.passwordEncoder(encoder)

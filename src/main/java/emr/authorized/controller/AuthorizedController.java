@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,11 +24,9 @@ import emr.assessment.model.Assessment;
 import emr.assessment.repository.AssessmentRepository;
 import emr.authorized.model.AssociateAssessmentModel;
 import emr.authorized.model.AssociatePatientModel;
+import emr.authorized.model.UpdatePasswordModel;
 import emr.patient.model.Patient;
 import emr.patient.repository.PatientRepository;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/authorized")
@@ -39,6 +40,8 @@ public class AuthorizedController {
 	@Autowired
 	AssessmentRepository assessmentRepo;
 	
+	String salt = "Marissa";
+
 	// If someone can access this endpoint, they have permission to use the EMR
 	@RequestMapping(value="/verify", method=RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
@@ -155,5 +158,16 @@ public class AuthorizedController {
 		}
 
 		return patient;
+	}
+
+	@RequestMapping(value="/password", method=RequestMethod.PUT)
+	@ResponseStatus(HttpStatus.OK)
+	public Principle changePassword(@RequestBody UpdatePasswordModel model) {
+		Principle user = adminRepo.findOne(model.getUserId());
+		StandardPasswordEncoder encoder = new StandardPasswordEncoder(salt);
+		String encodedPassword = encoder.encode(model.getPassword());
+		user.setPassword(encodedPassword);
+		adminRepo.save(user);
+        return user;
 	}
 }
