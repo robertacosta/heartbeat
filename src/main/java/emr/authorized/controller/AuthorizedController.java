@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,7 @@ public class AuthorizedController {
 	AssessmentRepository assessmentRepo;
 	
 	String salt = "Marissa";
+	DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
 
 	// If someone can access this endpoint, they have permission to use the EMR
 	@RequestMapping(value="/verify", method=RequestMethod.GET)
@@ -167,6 +171,7 @@ public class AuthorizedController {
 		StandardPasswordEncoder encoder = new StandardPasswordEncoder(salt);
 		String encodedPassword = encoder.encode(model.getPassword());
 		user.setPassword(encodedPassword);
+		user.setLastPasswordChange(LocalDate.now().toString(formatter));
 		adminRepo.save(user);
         return user;
 	}
