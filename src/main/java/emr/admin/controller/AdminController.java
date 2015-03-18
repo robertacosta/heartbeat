@@ -141,7 +141,7 @@ public class AdminController {
 
 		String password = RandomStringUtils.random(8, true, true);
 
-		SendGrid sendgrid = new SendGrid("***REMOVED***", "***REMOVED***");
+		SendGrid sendgrid = new SendGrid(System.getenv("SENDGRID_USERNAME"), System.getenv("SENDGRID_PASSWORD"));
 		SendGrid.Email email = new SendGrid.Email();
 		email.addTo(user.getEmail());
 		email.setFrom("robert.j.acosta@gmail.com");
