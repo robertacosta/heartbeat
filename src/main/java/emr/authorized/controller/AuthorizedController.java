@@ -43,7 +43,6 @@ public class AuthorizedController {
 	@Autowired
 	AssessmentRepository assessmentRepo;
 	
-	String salt = "Marissa";
 	DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
 
 	// If someone can access this endpoint, they have permission to use the EMR
@@ -168,7 +167,7 @@ public class AuthorizedController {
 	@ResponseStatus(HttpStatus.OK)
 	public Principle changePassword(@RequestBody UpdatePasswordModel model) {
 		Principle user = adminRepo.findOne(model.getUserId());
-		StandardPasswordEncoder encoder = new StandardPasswordEncoder(salt);
+		StandardPasswordEncoder encoder = new StandardPasswordEncoder(System.getenv("SALT"));
 		String encodedPassword = encoder.encode(model.getPassword());
 		user.setPassword(encodedPassword);
 		user.setLastPasswordChange(LocalDate.now().toString(formatter));

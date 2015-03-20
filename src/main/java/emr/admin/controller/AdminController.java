@@ -35,7 +35,6 @@ public class AdminController {
 	PrincipleRepository repo;
 
 	DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
-	String salt = "Marissa";
 
 	//Spring Security see this :
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -144,7 +143,7 @@ public class AdminController {
 		SendGrid sendgrid = new SendGrid(System.getenv("SENDGRID_USERNAME"), System.getenv("SENDGRID_PASSWORD"));
 		SendGrid.Email email = new SendGrid.Email();
 		email.addTo(user.getEmail());
-		email.setFrom("robert.j.acosta@gmail.com");
+		email.setFrom(System.getenv("SENDGRID_FROM_EMAIL"));
 		email.setSubject(subject);
 		email.setHtml(user.getFirstName());
 
@@ -158,7 +157,7 @@ public class AdminController {
 			logger.error("Failed to email user with creds: " + e.getMessage());
 		}
 
-		StandardPasswordEncoder encoder = new StandardPasswordEncoder(salt);
+		StandardPasswordEncoder encoder = new StandardPasswordEncoder(System.getenv("SALT"));
 		String encodedPassword = encoder.encode(password);
 
 		return encodedPassword;

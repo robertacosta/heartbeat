@@ -21,11 +21,9 @@ public class SecurityConfig {
 		@Autowired
 		DataSource aclDataSource;
 
-		String salt = "Marissa";
-
 		@Override
 		public void init(AuthenticationManagerBuilder auth) throws Exception {
-			  StandardPasswordEncoder encoder = new StandardPasswordEncoder(salt);
+			  StandardPasswordEncoder encoder = new StandardPasswordEncoder(System.getenv("SALT"));
 
 			  auth.jdbcAuthentication().dataSource(aclDataSource)
 			  	.passwordEncoder(encoder)
